@@ -23,7 +23,6 @@ components: sources: journald: {
 	}
 
 	support: {
-
 		platforms: {
 			"aarch64-unknown-linux-gnu":  true
 			"aarch64-unknown-linux-musl": true
@@ -104,16 +103,17 @@ components: sources: journald: {
 	}
 	examples: log: [
 		{
+			_line: "reply from 192.168.1.2: offset -0.001791 delay 0.000176, next query 1500s"
 			title: "Sample Output"
 			configuration: {
 			}
 			input: {
-				"2019-07-26 20:30:27 reply from 192.168.1.2: offset -0.001791 delay 0.000176, next query 1500s"
+				"2019-07-26 20:30:27 \(_line)"
 			}
 			output: {
-				timestamp:                "2019-07-26T20:30:27.000443Z"
-				message:                  "reply from 192.168.1.2: offset -0.001791 delay 0.000176, next query 1500s"
-				host:                     "lorien.example.com"
+				timestamp:                examples._current_timestamp
+				message:                  _line
+				host:                     examples._localhost
 				"__REALTIME_TIMESTAMP":   "1564173027000443"
 				"__MONOTONIC_TIMESTAMP":  "98694000446"
 				"_BOOT_ID":               "124c781146e841ae8d9b4590df8b9231"

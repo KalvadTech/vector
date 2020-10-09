@@ -177,31 +177,34 @@ components: sources: file: {
 				required:    true
 				type: string: examples: ["/var/log/apache/access.log"]
 			}
-			host: fields._host
+			host: fields._localhost
 			message: {
 				description: "The raw line from the file."
 				required:    true
 				type: string: examples: ["53.126.150.246 - - [01/Oct/2020:11:25:58 -0400] \"GET /disintermediate HTTP/2.0\" 401 20308"]
 			}
-			timestamp: fields._timestamp
+			timestamp: fields._current_timestamp
 		}
 	}
 
 	examples: log: [
 		{
+			_line: "53.126.150.246 - - [01/Oct/2020:11:25:58 -0400] \"GET /disintermediate HTTP/2.0\" 401 20308"
+			_file: "/var/logs/**/*.log"
 			title: "Apache Access Log"
 			configuration: {
-				include: ["/var/logs/**/*.log"]
+				include: [_file]
 			}
 			input: """
-				```text filename="/var/log/apache/access.log"
-				53.126.150.246 - - [01/Oct/2020:11:25:58 -0400] \"GET /disintermediate HTTP/2.0\" 401 20308"
+				```text filename="\(_file)"
+				\(_line)
 				```
 				"""
 			output: {
-				file:      "/var/log/apache/access.log"
-				message:   "53.126.150.246 - - [01/Oct/2020:11:25:58 -0400] \"GET /disintermediate HTTP/2.0\" 401 20308"
-				timestamp: "2020-10-01T11:23:25.333432Z"
+				file:      _file
+				host:      examples._localhost
+				message:   _line
+				timestamp: examples._current_timestamp
 			}
 		},
 	]

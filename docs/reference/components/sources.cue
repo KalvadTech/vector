@@ -73,13 +73,19 @@ components: sources: [Name=string]: {
 	output: {
 		logs?: [Name=string]: {
 			fields: {
-				_host: {
+				_localhost: {
 					description: "The local hostname, equivalent to the `gethostname` command."
 					required:    true
 					type: string: examples: ["host.mydomain.com"]
 				}
 
-				_timestamp: {
+				_raw_message: {
+					description: "The raw message, unparsed."
+					required:    true
+					type: string: examples: ["Started GET / for 127.0.0.1 at 2012-03-10 14:28:14 +0100"]
+				}
+
+				_current_timestamp: {
 					description: "The exact time the event was ingested into Vector."
 					required:    true
 					type: timestamp: {}
@@ -90,6 +96,8 @@ components: sources: [Name=string]: {
 
 	// Example uses for the component.
 	examples: {
+		_current_timestamp: "2020-10-05T13:32:52.416827Z"
+		_localhost:         "my-server.local"
 		log: [
 			...{
 				input: string

@@ -89,7 +89,7 @@ components: sources: http: {
 					required:      true
 					type: string: examples: ["Hello world"]
 				}
-				timestamp: fields._timestamp
+				timestamp: fields._current_timestamp
 			}
 		}
 		structured: {
@@ -101,17 +101,17 @@ components: sources: http: {
 					required:      false
 					type: "*": {}
 				}
-				timestamp: fields._timestamp
+				timestamp: fields._current_timestamp
 			}
 		}
 	}
 
 	examples: log: [
 		{
-			_line:       "Hello world"
-			_host:       "123.456.789.111"
-			_user_agent: "my-service/v2.1"
-			title:       "text/plain"
+			_line:        "Hello world"
+			_remote_host: "123.456.789.111"
+			_user_agent:  "my-service/v2.1"
+			title:        "text/plain"
 			configuration: {
 				address:  "0.0.0.0:80"
 				encoding: "text"
@@ -121,23 +121,23 @@ components: sources: http: {
              ```http
              Content-Type: text/plain
              User-Agent: \( _user_agent )
-             X-Forwarded-For: \( _host )
+             X-Forwarded-For: \( _remote_host )
 
              \( _line )
              ```
              """
 			output: {
-				host:         _host
+				host:         _remote_host
 				message:      _line
-				timestamp:    "2020-10-01T11:23:25.333432Z"
+				timestamp:    examples._current_timestamp
 				"User-Agent": _user_agent
 			}
 		},
 		{
-			_line:       "{\"key\": \"val\"}"
-			_host:       "123.456.789.111"
-			_user_agent: "my-service/v2.1"
-			title:       "application/json"
+			_line:        "{\"key\": \"val\"}"
+			_remote_host: "123.456.789.111"
+			_user_agent:  "my-service/v2.1"
+			title:        "application/json"
 			configuration: {
 				address:  "0.0.0.0:80"
 				encoding: "json"
@@ -147,15 +147,15 @@ components: sources: http: {
              ```http
              Content-Type: application/json
              User-Agent: \( _user_agent )
-             X-Forwarded-For: \( _host )
+             X-Forwarded-For: \( _remote_host )
 
              \( _line )
              ```
              """
 			output: {
-				host:         _host
+				host:         _remote_host
 				key:          "val"
-				timestamp:    "2020-10-01T11:23:25.333432Z"
+				timestamp:    examples._current_timestamp
 				"User-Agent": _user_agent
 			}
 		},

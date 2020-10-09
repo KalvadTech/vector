@@ -236,11 +236,13 @@ components: transforms: lua: {
 						"""#
 				}
 				input: {
+					timestamp:       "2020-10-14T23:22:16.448228Z"
 					field_to_rename: "old value"
 					field_to_remove: "remove me"
 				}
 				output: {
-					field: "new value"
+					timestamp: "2020-10-14T23:22:16.448228Z"
+					field:     "new value"
 					nested: field: "nested value"
 					renamed_field: "old value"
 				}

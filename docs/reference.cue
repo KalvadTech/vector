@@ -257,8 +257,40 @@ package metadata
 	// Output events for the component.
 	if kind == "source" || kind == "transform" {
 		output: {
-			logs?:    #LogOutput
-			metrics?: #MetricOutput
+			logs?: [Name=string]: {
+				description: string
+				name:        Name
+				fields: [Name=string]: {
+					description:    string
+					name:           Name
+					relevant_when?: string
+					required:       bool
+					type: {
+						"*": {}
+						"[string]"?: {
+							examples: [[string, ...string], ...[string, ...string]]
+						}
+						"string"?: {
+							examples: [string, ...string]
+						}
+						"timestamp"?: {
+							examples: ["2020-11-01T21:15:47.443232Z"]
+						}
+					}
+				}
+			}
+			metrics?: [Name=string]: {
+				description:    string
+				relevant_when?: string
+				tags: [Name=string]: {
+					description: string
+					examples: [string, ...]
+					required: bool
+					name:     Name
+				}
+				name: Name
+				type: "counter" | "gauge" | "histogram" | "summary"
+			}
 		}
 	}
 
@@ -313,42 +345,6 @@ package metadata
 		title: string
 		body:  string
 	}]
-}
-
-#LogOutput: [Name=string]: {
-	description: string
-	name:        Name
-	fields: [Name=string]: {
-		description:    string
-		name:           Name
-		relevant_when?: string
-		required:       bool
-		type: {
-			"*": {}
-			"[string]"?: {
-				examples: [[string, ...string], ...[string, ...string]]
-			}
-			"string"?: {
-				examples: [string, ...string]
-			}
-			"timestamp"?: {
-				examples: ["2020-11-01T21:15:47.443232Z"]
-			}
-		}
-	}
-}
-
-#MetricOutput: [Name=string]: {
-	description:    string
-	relevant_when?: string
-	tags: [Name=string]: {
-		description: string
-		examples: [string, ...]
-		required: bool
-		name:     Name
-	}
-	name: Name
-	type: "counter" | "gauge" | "histogram" | "summary"
 }
 
 components: close({
