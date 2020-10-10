@@ -95,14 +95,10 @@ components: sources: [Name=string]: {
 	}
 
 	// Example uses for the component.
-	examples: {
+	examples: log: [Name=string]: {
 		_current_timestamp: "2020-10-05T13:32:52.416827Z"
 		_localhost:         "my-server.local"
-		log: [
-			...{
-				input: string
-			},
-		]
+		input: string
 	}
 
 	how_it_works: {

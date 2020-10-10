@@ -30,7 +30,7 @@ package metadata
 				default: [...string] | null
 			}
 
-			enum?: [Name=_]: string
+			enum?: [Name=string]: string
 
 			examples: [...[...string]] | *[[
 					for k, v in enum {
@@ -54,7 +54,7 @@ package metadata
 				default: string | null
 			}
 
-			enum?: [Name=_]: string
+			enum?: [Name=string]: string
 
 			examples: [...string] | *[
 					for k, v in enum {
@@ -105,9 +105,17 @@ package metadata
 			deployment_roles: ["daemon" | "service" | "sidecar", ...]
 		}
 
+		if kind == "transform" || kind == "sink" {
+			egress_method: "batch" | "stream"
+		}
+
 		// The behavior function for this component. This is used as a filter to
 		// help users find components that serve a function.
 		function: string
+
+		if kind == "source" {
+			ingress_method: "batch" | "stream"
+		}
 
 		if kind == "sink" {
 			// Any service providers that host the downstream service.
@@ -296,32 +304,51 @@ package metadata
 
 	// Example uses for the component.
 	examples: {
-		log: [
-			...{
-				title: string
-				"configuration": {
-					for k, v in configuration {
-						"\( k )"?: _ | *null
-					}
+		log: [Name=string]: {
+			title: string
+			"configuration": {
+				for k, v in configuration {
+					"\( k )"?: _ | *null
 				}
-				input:  #LogEvent | [#LogEvent, ...] | string
-				output: #LogEvent | [#LogEvent, ...] | null
-				notes?: string
-			},
-		]
-		metric: [
-			...{
-				title: string
-				"configuration": {
-					for k, v in configuration {
-						"\( k )"?: _ | *null
-					}
+			}
+
+			if kind == "source" {
+				input: string
+			}
+
+			if kind == "transform" || kind == "sink" {
+				if classes.egress_method == "batch" {
+					input: [#LogEvent, ...]
 				}
-				input:  #MetricEvent
-				output: #MetricEvent | null
-				notes?: string
-			},
-		]
+
+				if classes.egress_method == "stream" {
+					input: #LogEvent
+				}
+			}
+
+			if kind == "source" {
+				if classes.ingress_method == "batch" {
+					output: [#LogEvent, ...]
+				}
+
+				if classes.ingress_method == "stream" {
+					output: #LogEvent
+				}
+			}
+
+			notes?: string
+		}
+		metric: [Name=string]: {
+			title: string
+			"configuration": {
+				for k, v in configuration {
+					"\( k )"?: _ | *null
+				}
+			}
+			input:  #MetricEvent
+			output: #MetricEvent | null
+			notes?: string
+		}
 	}
 
 	// Markdown-based sections that describe how the component works.

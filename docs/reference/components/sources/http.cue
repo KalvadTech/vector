@@ -9,6 +9,7 @@ components: sources: http: {
 		commonly_used: false
 		deployment_roles: ["service", "sidecar"]
 		function: "receive"
+		ingress_method: "batch"
 	}
 
 	features: {
@@ -106,8 +107,8 @@ components: sources: http: {
 		}
 	}
 
-	examples: log: [
-		{
+	examples: log: {
+		text: {
 			_line:        "Hello world"
 			_remote_host: "123.456.789.111"
 			_user_agent:  "my-service/v2.1"
@@ -132,8 +133,8 @@ components: sources: http: {
 				timestamp:    examples._current_timestamp
 				"User-Agent": _user_agent
 			}
-		},
-		{
+		}
+		json: {
 			_line:        "{\"key\": \"val\"}"
 			_remote_host: "123.456.789.111"
 			_user_agent:  "my-service/v2.1"
@@ -158,6 +159,6 @@ components: sources: http: {
 				timestamp:    examples._current_timestamp
 				"User-Agent": _user_agent
 			}
-		},
-	]
+		}
+	}
 }

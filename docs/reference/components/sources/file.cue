@@ -9,6 +9,7 @@ components: sources: file: {
 		commonly_used: true
 		deployment_roles: ["daemon", "sidecar"]
 		function: "collect"
+		ingress_method: "stream"
 	}
 
 	features: {
@@ -187,27 +188,25 @@ components: sources: file: {
 		}
 	}
 
-	examples: log: [
-		{
-			_line: "53.126.150.246 - - [01/Oct/2020:11:25:58 -0400] \"GET /disintermediate HTTP/2.0\" 401 20308"
-			_file: "/var/logs/**/*.log"
-			title: "Apache Access Log"
-			configuration: {
-				include: [_file]
-			}
-			input: """
-				```text filename="\(_file)"
-				\(_line)
-				```
-				"""
-			output: {
-				file:      _file
-				host:      examples._localhost
-				message:   _line
-				timestamp: examples._current_timestamp
-			}
-		},
-	]
+	examples: log: line: {
+		_line: "53.126.150.246 - - [01/Oct/2020:11:25:58 -0400] \"GET /disintermediate HTTP/2.0\" 401 20308"
+		_file: "/var/logs/**/*.log"
+		title: "Apache Access Log"
+		configuration: {
+			include: [_file]
+		}
+		input: """
+			```text filename="\(_file)"
+			\(_line)
+			```
+			"""
+		output: {
+			file:      _file
+			host:      examples._localhost
+			message:   _line
+			timestamp: examples._current_timestamp
+		}
+	}
 
 	how_it_works: {
 		autodiscover: {

@@ -9,6 +9,7 @@ components: sources: stdin: {
 		commonly_used: false
 		deployment_roles: ["sidecar"]
 		function: "receive"
+		ingress_method: "stream"
 	}
 
 	features: {
@@ -71,22 +72,20 @@ components: sources: stdin: {
 		}
 	}
 
-	examples: log: [
-		{
-			_line: "2019-02-13T19:48:34+00:00 [info] Started GET \"/\" for 127.0.0.1"
-			title: "HTTP server output"
-			configuration: {}
-			input: """
-				```text
-				\( _line )
-				```
-				"""
-			output: {
-				timestamp: examples._current_timestamp
-				message:   _line
-				host:      examples._localhost
-			}
-			notes: "The `timestamp` field represents the exact time the event was received."
-		},
-	]
+	examples: log: line: {
+		_line: "2019-02-13T19:48:34+00:00 [info] Started GET \"/\" for 127.0.0.1"
+		title: "HTTP server output"
+		configuration: {}
+		input: """
+			```text
+			\( _line )
+			```
+			"""
+		output: {
+			timestamp: line._current_timestamp
+			message:   _line
+			host:      line._localhost
+		}
+		notes: "The `timestamp` field represents the exact time the event was received."
+	}
 }

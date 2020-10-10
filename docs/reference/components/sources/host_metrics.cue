@@ -9,6 +9,7 @@ components: sources: host_metrics: {
 		commonly_used: false
 		deployment_roles: ["daemon"]
 		function: "collect"
+		ingress_method: "batch"
 	}
 
 	features: {
